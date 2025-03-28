@@ -1,0 +1,52 @@
+<div class="products-container">
+  <header class="products-header">
+    <h1>Product List</h1>
+    <p>Selected high-quality products to provide you with the best shopping experience</p>
+  </header>
+
+  <div class="products-grid">
+    <div *ngFor="let product of products" class="product-card">
+      <img [src]="product.image" [alt]="product.name" class="product-image">
+      <div class="product-info">
+        <h2>{{product.name}}</h2>
+        <p class="price">{{product.price}}</p>
+        <p class="description">{{product.description}}</p>
+        <button (click)="addToCart(product)" class="add-to-cart-btn">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="reviews-section">
+    <h2>User Reviews</h2>
+    <div class="add-review">
+      <textarea
+        [(ngModel)]="newReview"
+        placeholder="Write your review..."
+        rows="3"
+      ></textarea>
+      <button 
+        (click)="submitReview()"
+        [disabled]="!newReview.trim()"
+        class="submit-review-btn"
+      >
+        Submit Review
+      </button>
+    </div>
+
+    <div class="reviews-list">
+      <div *ngIf="reviews.length === 0" class="no-reviews">
+        No reviews yet, be the first to leave a review!
+      </div>
+      
+      <div *ngFor="let review of reviews" class="review-item">
+        <div class="review-header">
+          <span class="review-author" [innerHTML]="getSafeHtml(review.username || 'Anonymous User')"></span>
+          <span class="review-date">{{review.createdAt | date:'medium'}}</span>
+        </div>
+        <p class="review-content" [innerHTML]="getSafeHtml(review.content)"></p>
+      </div>
+    </div>
+  </div>
+</div>

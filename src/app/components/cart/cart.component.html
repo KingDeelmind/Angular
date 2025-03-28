@@ -1,0 +1,63 @@
+<div class="cart-container">
+  <header class="cart-header">
+    <h1>Shopping Cart</h1>
+    <p>Your shopping list</p>
+  </header>
+
+  <ng-container *ngIf="cartItems$ | async as cartItems">
+    <div *ngIf="cartItems.length === 0" class="empty-cart">
+      <p>Your cart is empty</p>
+      <button routerLink="/products" class="continue-shopping-btn">
+        Continue Shopping
+      </button>
+    </div>
+
+    <div *ngIf="cartItems.length > 0" class="cart-content">
+      <div class="cart-items">
+        <div *ngFor="let item of cartItems" class="cart-item">
+          <img [src]="item.image" [alt]="item.name" class="item-image">
+          <div class="item-details">
+            <!-- Safe original code -->
+            <!-- <h3>{{item.name}}</h3> -->
+            
+            <!-- Unsafe code, vulnerable to XSS attacks -->
+            <h3 [innerHTML]="getSafeHtml(item.name)"></h3>
+            
+            <p class="item-price">{{item.price}}</p>
+            <p class="item-description">{{item.description}}</p>
+            <button (click)="removeFromCart(item.id)" class="remove-btn">
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-summary">
+        <div class="summary-details">
+          <h2>Order Summary</h2>
+          <div class="summary-row">
+            <span>Total Item Price</span>
+            <span>¥{{totalPrice.toFixed(2)}}</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping Fee</span>
+            <span>Free Shipping</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>¥{{totalPrice.toFixed(2)}}</span>
+          </div>
+        </div>
+        
+        <div class="cart-actions">
+          <button (click)="checkout()" class="checkout-btn">
+            Checkout
+          </button>
+          <button (click)="shareCart()" class="share-btn">
+            Share Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

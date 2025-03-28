@@ -1,0 +1,45 @@
+<div class="share-container">
+  <header class="share-header">
+    <h1>Shared Cart</h1>
+    <p>View the list of items shared by your friends</p>
+  </header>
+
+  <div class="share-content">
+    <div *ngIf="sharedItems.length === 0" class="empty-share">
+      <p>No shared items found</p>
+    </div>
+
+    <ng-container *ngIf="sharedItems.length > 0">
+      <div class="share-actions">
+        <button (click)="copyShareLink()" class="copy-link-btn">
+          Copy Share Link
+        </button>
+        <button (click)="addAllToCart()" class="add-all-btn">
+          Add All to Cart
+        </button>
+      </div>
+
+      <div class="shared-items">
+        <div *ngFor="let item of sharedItems" class="shared-item">
+          <img 
+            [src]="item.image || 'assets/placeholder.jpg'" 
+            [alt]="item.name"
+            class="item-image"
+          >
+          <div class="item-details">
+            <!-- Safe original code (commented out) -->
+            <!-- <h3>{{item.name}}</h3> -->
+            
+            <!-- Unsafe code, vulnerable to XSS attacks -->
+            <h3 [innerHTML]="getSafeHtml(item.name)"></h3>
+            
+            <p *ngIf="item.price" class="item-price">{{item.price}}</p>
+            <p *ngIf="item.description" class="item-description">
+              {{item.description}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
